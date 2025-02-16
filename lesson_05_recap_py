@@ -1,0 +1,89 @@
+
+import turtle
+import random
+
+
+def circle_from_middle(radius):
+    """
+    Make a circle around the current turtle position.
+    """
+    turtle.penup()
+    turtle.right(90)
+    turtle.forward(radius)
+    turtle.left(90)
+    turtle.pendown()
+    turtle.circle(radius)
+    turtle.penup()
+    turtle.left(90)
+    turtle.forward(radius)
+    turtle.right(90)
+    turtle.pendown()
+
+
+def goto_invis(x, y):
+    """
+    Go to x,y without making a line.
+    """
+    turtle.penup()
+    turtle.goto(x, y)
+
+
+def onclick_callback(x, y):
+    """
+    Go to x,y without making a line and
+    make a circle with a radius of 10 px.
+    """
+    goto_invis(x, y)
+    circle_from_middle(10)
+
+
+def draw_circle_constant():
+    """
+    Make a circle with a radius of 10 px.
+    """
+    circle_from_middle(10)
+
+
+def go_forward_constant():
+    """
+    Go forward by 20 px.
+    """
+    turtle.forward(20)
+
+
+RADIUS = 100
+ITERATION_COUNT = 10
+turtle.speed(0)
+turtle.pensize(1)
+turtle.hideturtle()
+
+# COLORS AND FUNCTIONS
+r = random.random()  # 0.0 - 1.0 e.g. 0.7896543
+g = random.random()
+b = random.random()
+color = (r, g, b)  # create an RGB color from random values
+turtle.color(color)
+turtle.circle(RADIUS)  # make circle
+turtle.color("black")
+circle_from_middle(RADIUS)  # make circle from the middle
+
+# RANDOM ITERATIONS
+# create ITERATION_COUNT circles on random locations
+# each circle will be more red and smaller than the previous one
+for i in range(ITERATION_COUNT):
+    gradient_channel = (
+        1 - i / ITERATION_COUNT
+    )  # 1.0 - 0.0 decreasing with each iteration
+    color = (1 - gradient_channel, 0, 0)
+    turtle.color(color)
+    pos_x = random.random() * 500 - 250  # x in range from -250 to 250
+    pos_y = random.random() * 500 - 250  # y in range from -250 to 250
+    goto_invis(pos_x, pos_y)
+    circle_from_middle(gradient_channel * 100)
+
+# CALLBACKS
+turtle.onkeypress(draw_circle_constant, "w")
+turtle.onkeypress(go_forward_constant, "d")
+turtle.onscreenclick(onclick_callback, 1, False)
+turtle.listen()
+turtle.done()
